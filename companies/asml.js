@@ -92,8 +92,8 @@ addCompany(Object.assign({
     t(op.c,op.y+45,"营业利润率44.4% · 同比+11.6pp",{size:10,fill:"#e2f0dc"});
 
     t(opex.c,opex.y+20,"费用 15.27 亿",{size:10,weight:800,anchor:"middle",fill:"#fff"});
-    t(opex.c,opex.y+37,"研发 11.74",{size:8.5,anchor:"middle",fill:"#fdecerb"});
-    t(opex.c,opex.y+51,"销管 3.53",{size:8.5,anchor:"middle",fill:"#fdecerb"});
+    t(opex.c,opex.y+37,"研发 11.74",{size:8.5,anchor:"middle",fill:"#fdeceb"});
+    t(opex.c,opex.y+51,"销管 3.53",{size:8.5,anchor:"middle",fill:"#fdeceb"});
 
     t(X[0],1084,"每股收益 12.95 欧元（稀释12.93）｜员工 44,681 FTE｜新机121台、二手8台｜权益占总资产37.4%｜前三季收入297.55亿、净利106.35亿",{size:8,weight:700,anchor:"start",fill:F.navy});
 
