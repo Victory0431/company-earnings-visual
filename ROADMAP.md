@@ -14,7 +14,7 @@
 |---|---|---|---|---|---|
 | 1 | 亚马逊 Amazon.com, Inc. | NASDAQ: AMZN | `amzn` | 已入库 | `c56aca0` |
 | 2 | Alphabet Inc.（Google） | NASDAQ: GOOGL / GOOG | `googl` | 已入库 | `b5b1f74` |
-| 3 | 甲骨文 Oracle Corporation | NYSE: ORCL | `orcl` | 待办 | — |
+| 3 | 甲骨文 Oracle Corporation | NYSE: ORCL | `orcl` | 已入库 | `43ac1d2` |
 | 4 | 英伟达 NVIDIA Corporation | NASDAQ: NVDA | `nvda` | 待办 | — |
 | 5 | 超微半导体 AMD | NASDAQ: AMD | `amd` | 待办 | — |
 | 6 | 台积电 TSMC | NYSE: TSM / TWSE: 2330 | `tsmc` | 待办 | — |
