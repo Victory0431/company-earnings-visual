@@ -5,3 +5,4 @@ amzn
 googl
 orcl
 nvda
+amd
