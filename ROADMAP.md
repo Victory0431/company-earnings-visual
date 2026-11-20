@@ -13,7 +13,7 @@
 | # | 公司 | 代码 | 拟用模块 id | 状态 | 入库 commit |
 |---|---|---|---|---|---|
 | 1 | 亚马逊 Amazon.com, Inc. | NASDAQ: AMZN | `amzn` | 已入库 | `c56aca0` |
-| 2 | Alphabet Inc.（Google） | NASDAQ: GOOGL / GOOG | `googl` | 待办 | — |
+| 2 | Alphabet Inc.（Google） | NASDAQ: GOOGL / GOOG | `googl` | 已入库 | `b5b1f74` |
 | 3 | 甲骨文 Oracle Corporation | NYSE: ORCL | `orcl` | 待办 | — |
 | 4 | 英伟达 NVIDIA Corporation | NASDAQ: NVDA | `nvda` | 待办 | — |
 | 5 | 超微半导体 AMD | NASDAQ: AMD | `amd` | 待办 | — |
