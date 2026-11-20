@@ -12,7 +12,7 @@
 
 | # | 公司 | 代码 | 拟用模块 id | 状态 | 入库 commit |
 |---|---|---|---|---|---|
-| 1 | 亚马逊 Amazon.com, Inc. | NASDAQ: AMZN | `amzn` | 待办 | — |
+| 1 | 亚马逊 Amazon.com, Inc. | NASDAQ: AMZN | `amzn` | 已入库 | `c56aca0` |
 | 2 | Alphabet Inc.（Google） | NASDAQ: GOOGL / GOOG | `googl` | 待办 | — |
 | 3 | 甲骨文 Oracle Corporation | NYSE: ORCL | `orcl` | 待办 | — |
 | 4 | 英伟达 NVIDIA Corporation | NASDAQ: NVDA | `nvda` | 待办 | — |
@@ -38,7 +38,7 @@
 - [ ] 其余公司 SVG 字节未变
 - [ ] 已推送，commit sha 已回填本表
 
-## 已知的与预期难点
+## 己知的与预期难点
 
 - **亚马逊**：分部是北美 / 国际 / AWS 三段，经营利润要按分部拼，AWS 的利润率是关键看点；广告收入单列在“其他”。
 - **Alphabet**：Google Services / Google Cloud / Other Bets 三段，Other Bets 常年亏损，图上要明确画成流出。
