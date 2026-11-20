@@ -3,3 +3,4 @@ wc
 msft
 amzn
 googl
+orcl
