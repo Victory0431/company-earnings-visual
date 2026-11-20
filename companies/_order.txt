@@ -9,3 +9,4 @@ amd
 tsm
 asml
 meta
+tencent
