@@ -7,3 +7,4 @@ orcl
 nvda
 amd
 tsm
+asml
