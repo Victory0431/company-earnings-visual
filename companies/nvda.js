@@ -4,7 +4,7 @@
 addCompany(Object.assign({
  id:"nvda", nav:"英伟达",
  name:"NVIDIA Corporation", code:"NASDAQ: NVDA",
- period:"FY2027 第三季度（2026年8—10月）", end:"2026年8—10月", disclosed:"2026-11-17",
+ period:"FY2027 第三季度（2026年8—10月）", end:"2026年10月25日", disclosed:"2026-11-17",
  basis:"美国公认会计准则（US GAAP）· 未经审计 · 单季口径", unit:"亿美元",
  title:"英伟达 怎么赚钱", sub:"FY2027 Q3 利润表 · 单位：美元 · 同比对比 FY2026 Q3",
  take:[
