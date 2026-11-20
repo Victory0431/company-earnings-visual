@@ -16,8 +16,8 @@
 | 2 | Alphabet Inc.（Google） | NASDAQ: GOOGL / GOOG | `googl` | 已入库 | `b5b1f74` |
 | 3 | 甲骨文 Oracle Corporation | NYSE: ORCL | `orcl` | 已入库 | `43ac1d2` |
 | 4 | 英伟达 NVIDIA Corporation | NASDAQ: NVDA | `nvda` | 已入库 | `7e65553` |
-| 5 | 超微半导体 AMD | NASDAQ: AMD | `amd` | 待办 | — |
-| 6 | 台积电 TSMC | NYSE: TSM / TWSE: 2330 | `tsmc` | 待办 | — |
+| 5 | 超微半导体 AMD | NASDAQ: AMD | `amd` | 已入库 | `f674b72` |
+| 6 | 台积电 TSMC | NYSE: TSM / TWSE: 2330 | `tsmc` | 进行中 | — |
 | 7 | 阿斯麦 ASML | NASDAQ: ASML / Euronext: ASML | `asml` | 待办 | — |
 | 8 | Meta Platforms, Inc. | NASDAQ: META | `meta` | 待办 | — |
 | 9 | 腾讯控股 Tencent Holdings | HKEX: 0700 | `tencent` | 待办 | — |
@@ -44,7 +44,7 @@
 - **Alphabet**：Google Services / Google Cloud / Other Bets 三段，Other Bets 常年亏损，图上要明确画成流出。
 - **甲骨文**：财年 5 月结束（FY2027 Q1 = 2026 年 6—8 月），云与许可收入结构复杂，RPO 是行业指标。
 - **英伟达**：只有数据中心与边缘计算两段，毛利率极高（74.8%），Q4 指引毛利率降至 71—72%（Rubin 爬坡），应收与存货随收入翻倍是主要看点。
-- **AMD**：数据中心 / 客户端 / 游戏 / 嵌入式四段，Xilinx 并表影响可比性。
+- **AMD**：四段（数据中心 / 客户端 / 游戏 / 嵌入式），客户端与游戏在报表上同属一个分部；毛利率 54% 远低于英伟达，存货翻倍与现金流塌陷是主要看点。
 - **台积电**：以新台币为主，需同时给美元口径；先进制程收入占比是行业指标。
 - **ASML**：欧元，设备确认收入的季度波动极大（高低交替），必须写明不可按单季线性外推。
 - **Meta**：Family of Apps / Reality Labs 两段，Reality Labs 亏损要画成流出。
