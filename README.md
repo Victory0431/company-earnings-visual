@@ -2,7 +2,7 @@
 
 中文财报图解：每家公司一张以**利润桑基图**为主的长图 + 交互网页，覆盖利润表、现金流、资产负债表、季度趋势，支持一键导出 2160px 高清 PNG。
 
-在线浏览：https://victory0431.github.io/company-earnings-visual/
+在线浏览：https://victory0431.github.io/company-earnings-visual/ — 需先在仓库 Settings → Pages 启用一次：Source 选 `Deploy from a branch`，Branch 选 `main`、目录选 `/ (root)`，约 1 分钟后生效。
 
 ## 结构
 
