@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>公司财报图解 · 一页看懂</title>
+<style>
+  :root{--navy:#123050;--ink:#111;--green:#4e9c5c;--greenT:#428a4f;--red:#b5322a;--redT:#a92e26;--grey:#8e8e89;--line:#e4e2dc;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#f4f3f0;color:#1a1a1a;
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  body{padding-bottom:60px;}
+  /* ---------- 导航 ---------- */
+  .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:saturate(180%) blur(10px);
+       border-bottom:1px solid var(--line);}
+  .nav-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:10px 20px;overflow-x:auto;}
+  .brand{font-weight:900;color:var(--navy);font-size:14px;letter-spacing:.5px;white-space:nowrap;margin-right:10px;}
+  .tab{border:1px solid transparent;background:#f2f1ec;color:#40403c;padding:7px 15px;border-radius:999px;
+       font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .tab:hover{background:#e9e8e2;}
+  .tab.on{background:var(--navy);color:#fff;}
+  .tab.ghost{background:#fff;border-color:var(--line);color:#7a7a74;}
+  .spacer{flex:1;}
+  .dl{border:0;background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:8px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;}
+  .dl:hover{background:#1b4569;}
+  .dl.sec{background:#fff;color:var(--navy);border:1px solid #c9d3dc;}
+  .dl.sec:hover{background:#f1f5f8;}
+  /* ---------- 版心 ---------- */
+  .wrap{max-width:1120px;margin:0 auto;padding:26px 20px 0;}
+  .co{display:none;} .co.on{display:block;}
+  .meta{font-size:13px;color:#6a6a64;line-height:1.9;border-left:3px solid var(--navy);padding-left:12px;margin:0 0 18px;}
+  .meta b{color:var(--navy);font-size:15px;}
+  .take{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 22px;margin:0 0 22px;
+        box-shadow:0 2px 14px rgba(0,0,0,.03);}
+  .take h3{margin:0 0 12px;font-size:13px;letter-spacing:1.5px;color:var(--grey);font-weight:700;}
+  .take ul{margin:0;padding:0;}
+  .take li{list-style:none;display:flex;gap:10px;margin:0 0 10px;font-size:15.5px;line-height:1.65;color:#2a2a28;}
+  .take li:last-child{margin-bottom:0;}
+  .take .k{flex:0 0 auto;font-weight:800;color:var(--navy);background:#eef3f7;border-radius:6px;padding:1px 8px;height:24px;
+           font-size:12.5px;line-height:22px;}
+  .poster{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 4px 26px rgba(0,0,0,.05);}
+  .poster svg{display:block;width:100%;height:auto;}
+  .hint{font-size:12px;color:#9a9a94;margin:8px 2px 26px;}
+  /* ---------- 板块 ---------- */
+  .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 24px 26px;margin:0 0 22px;
+       box-shadow:0 2px 14px rgba(0,0,0,.03);}
+  .sec h2{margin:0 0 4px;font-size:19px;color:var(--navy);letter-spacing:.5px;}
+  .sec .sub{margin:0 0 18px;font-size:12.5px;color:var(--grey);}
+  /* 现金流 */
+  .cf{margin:6px 0 0;}
+  .cfrow{display:flex;align-items:center;gap:12px;margin:0 0 14px;}
+  .cfrow .nm{width:88px;font-size:14px;font-weight:700;color:#333;}
+  .cftrack{position:relative;flex:1;height:30px;background:#f7f6f2;border-radius:8px;}
+  .cftrack:after{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:#cfcdc6;}
+  .cfbar{position:absolute;top:3px;height:24px;border-radius:5px;}
+  .cfrow .vv{width:104px;text-align:right;font-size:14px;font-weight:800;}
+  .cfbar.pos{background:#4e9c5c;} .cfbar.neg{background:#b5322a;} .vv.pos{color:#2f7a3f;} .vv.neg{color:#a92e26;}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0 0;}
+  .fact{background:#f8f7f3;border-radius:12px;padding:12px 14px;}
+  .fact i{font-style:normal;display:block;font-size:12px;color:var(--grey);margin-bottom:4px;}
+  .fact b{font-size:16px;color:var(--navy);}
+  .fact s{display:block;text-decoration:none;font-size:11.5px;color:#8b8b85;margin-top:3px;line-height:1.5;}
+  /* 资产负债 */
+  .bs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+  .bcard{border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .bcard i{font-style:normal;font-size:12px;color:var(--grey);}
+  .bcard b{display:block;font-size:26px;font-weight:900;color:var(--navy);margin:6px 0 4px;letter-spacing:-.5px;}
+  .bcard s{display:block;text-decoration:none;font-size:11.5px;color:#8b8b85;line-height:1.6;}
+  /* 趋势 */
+  .tr{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .tr .cell{background:#faf9f6;border:1px solid #ece9e2;border-radius:14px;padding:12px 12px 8px;}
+  .tr .cell h4{margin:0 0 6px;font-size:13.5px;color:var(--navy);}
+  .tr .cell p{margin:8px 0 2px;font-size:11.5px;color:#8b8b85;line-height:1.6;}
+  /* 折叠 */
+  details{border-top:1px solid var(--line);padding:14px 0 4px;}
+  details:first-of-type{border-top:0;}
+  details summary{cursor:pointer;font-size:14.5px;font-weight:700;color:var(--navy);list-style:none;display:flex;align-items:center;gap:8px;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary:before{content:"＋";color:var(--grey);font-weight:700;}
+  details[open] summary:before{content:"－";}
+  details .body{font-size:14px;line-height:1.8;color:#3c3c39;padding:10px 0 6px;}
+  details .body b{color:var(--navy);}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid #efeee9;}
+  th{color:var(--grey);font-weight:700;font-size:11.5px;}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
+  .src{font-size:12px;color:#8f8f89;line-height:1.9;padding:10px 4px 0;}
+  .q{font-size:14px;line-height:1.8;color:#3c3c39;}
+  .q b{color:var(--navy);}
+  /* 新增公司面板 */
+  .how{padding-bottom:40px;}
+  .how pre{background:#f7f6f2;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;
+    font-family:ui-monospace,Consolas,Menlo,monospace;font-size:12.5px;line-height:1.7;color:#333;}
+  @media(max-width:640px){
+    .wrap{padding:18px 12px 0;}
+    .take{padding:14px 16px;} .sec{padding:16px 16px 20px;}
+    .cfrow .nm{width:64px;font-size:12.5px;} .cfrow .vv{width:86px;font-size:12.5px;}
+    .bcard b{font-size:22px;}
+    .nav-in{padding:8px 12px;}
+  }
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-in" id="nav"></div></div>
+<main id="main"></main>
+<div class="wrap how co" id="how">
+  <div class="sec">
+    <h2>新增一家公司：放进一个文件，导航自动多一个标签</h2>
+    <p class="sub">总览页只负责骨架、桑基引擎和导出；每家公司的数据与标注都在 companies/ 下自己的文件里，互不干扰。</p>
+    <div class="body">
+      <p class="q">目录结构（每家公司一个 js，改一家不会碰到别家）</p>
+      <pre>公司财报/
+├── 财报图解总览.html      ← 壳：样式、引擎、导航、PNG 导出（一般不碰）
+├── sync.js               ← 扫描目录，生成加载清单（加完文件跑一次）
+└── companies/
+    ├── _registry.js      ← addCompany() 注册表
+    ├── _index.js         ← 由 sync.js 生成：按顺序列出要加载的文件
+    ├── _order.txt        ← 导航顺序，一行一个 id
+    ├── _template.js      ← 新增公司模板（复制它改名）
+    ├── ali.js            ← 阿里巴巴：数据 + 主图标注
+    ├── wc.js             ← 潍柴动力
+    └── msft.js           ← 微软</pre>
+      <p class="q">三步</p>
+      <p class="q">① 复制 <b>companies/_template.js</b> 为 <b>companies/新id.js</b>，改 id / nav / 公司全称 / 代码 / 报告期 / 口径 / 单位。<br>
+      ② 填 <b>poster.nodes / links</b>：只写纵向 y、h 和金额；横向坐标由引擎按“单一比例尺 + 统一缝隙 + 数据驱动端口”推导，所以边与边、角与角天然对齐。再填 <b>take / cash / bs / trend / notes / src</b>，其余板块自动排版。<br>
+      ③ 跑 <b>node sync.js</b>（或直接在 companies/_order.txt 添一行 id），刷新页面——导航多一个标签，点它出这家公司，「下载高清 PNG」直接可用。</p>
+      <p class="q">主图上的文字标注写在每个文件自己的 <b>draw()</b> 里，注入的 t / q / rect / icon / push 与颜色表 F、fmt 都是现成的，不用重新搭版。</p>
+    </div>
+    <p class="hint">为什么不让页面自己“扫描文件夹”？浏览器双击打开（file://）出于安全不允许读目录和 fetch 本地文件，所以清单必须由 sync.js 预先写成 _index.js。这是唯一需要跑脚本的一步，其余全自动。</p>
+    <p class="hint">数据纪律：金额取自报表原文、加总必须闭合；推算值（单季倒减、FCF）在图内与脚注都标注“计算值”。</p>
+  </div>
+</div>
+<script src="companies/_registry.js"></script>
+<script src="companies/_index.js"></script>
+<script>ORDER.forEach(function(id){document.write('<script src="companies/'+id+'.js"><\/script>');});</script>
+<script>
+/* ============================================================
+   0. 公司数据（金额单位：亿元）
+   ============================================================ */
+const CO=window.CO||[];;
+/* ============================================================
+   1. 基础工具
+   ============================================================ */
+const F={ink:"#111111",green:"#4e9c5c",greenT:"#428a4f",red:"#b5322a",redT:"#a92e26",
+         grey:"#9a9a95",sub:"#6d6d6a",navy:"#123050"};
+const fmt=v=>{const r=(Math.round(v*10)/10).toFixed(1),p=r.split(".");return p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",")+"."+p[1];};
+const fmt0=v=>Math.round(v).toLocaleString("en-US");
+const wrap=(s,n)=>{
+  /* 按视觉宽度断行：数字/英文按~0.55 个汉字宽，英文单词与数字串不拆开，避免把 2026-09-30 或 UNAUDITED 截断 */
+  const wch=ch=>/[\x00-\x7F]/.test(ch)?0.55:1;
+  const tokens=[];let cur="",curW=0,glue=false;
+  const flushTok=()=>{if(cur){tokens.push(cur);cur="";curW=0;}};
+  for(const ch of s){
+    if(ch==="\u2060"){ /* 词连接符：与前一个 token 粘合，不被拆行 */
+      if(cur===""){const last=tokens.pop();if(last!==undefined){cur=last;curW=[...last].reduce((a,c)=>a+wch(c),0);}}
+      glue=true;continue;
+    }
+    const cw=wch(ch);
+    const isSpace=(ch===" ");
+    if(glue){glue=false;cur+=ch;curW+=cw;if(curW>=n*1.05){tokens.push(cur);cur="";curW=0;}continue;}
+    if(/[A-Za-z0-9.,%\-+\/~:()（）]/.test(ch)&&!isSpace){
+      cur+=ch;curW+=cw;
+      if(curW>=n*1.05){tokens.push(cur);cur="";curW=0;}
+      continue;
+    }
+    flushTok();
+    tokens.push(ch);
+  }
+  flushTok();
+  const out=[];let line="",lw=0;
+  tokens.forEach(tk=>{
+    if(tk===" "){ if(lw>0){ line+=" "; lw+=0.4; } return; }
+    const tw=Math.max(1,[...tk].reduce((a,c)=>a+wch(c),0));
+    if(lw+tw>n && lw>0){ out.push(line.trimEnd()); line=""; lw=0; }
+    line+=tk; lw+=tw;
+  });
+  if(line.trim())out.push(line.trimEnd());
+  /* 不吃标点入行首：闭合标点回贴到上一行行尾 */
+  for(let i=1;i<out.length;i++){
+    const m=out[i].match(/^[）)，。、；：%·]+/);
+    if(m){ out[i-1]+=m[0]; out[i]=out[i].slice(m[0].length); }
+  }
+  return out.filter(x=>x.trim()!=="");
+};
+
+/* ============================================================
+   2. 桑基布局引擎：单一比例尺 + 统一缝隙 + 端口由分录推导
+   ============================================================ */
+function engine(p){
+  const X=[56,1024],W=X[1]-X[0],S=W/p.rev,GAP=10,PG=4.5;
+  const pos={},groups={};
+  p.nodes.forEach(n=>{if(n.parent){(groups[n.parent]=groups[n.parent]||[]).push(n);}});
+  p.nodes.forEach(n=>{
+    if(n.parent)return;
+    if(n.mode==="root"){pos[n.id]={s:X[0],e:X[1],w:W,c:540};}
+    else if(n.mode==="left"){const e=X[0]+n.v*S;pos[n.id]={s:X[0],e:e,w:e-X[0],c:(X[0]+e)/2};}
+    else if(n.mode==="free"){const e=n.s+n.v*S;pos[n.id]={s:n.s,e:e,w:n.v*S,c:(n.s+e)/2};}
+    pos[n.id].y=n.y;pos[n.id].h=n.h;
+  });
+  p.nodes.forEach(n=>{
+    if(!n.parent)return;
+    const g=groups[n.parent];
+    if(g._done)return;
+    const span=n.parent==="__X__"?X:[pos[n.parent].s,pos[n.parent].e];
+    const vals=g.map(o=>o.v),usable=(span[1]-span[0])-(vals.length-1)*GAP,sum=vals.reduce((a,b)=>a+b,0);
+    let x=span[0];
+    g.forEach((o,i)=>{
+      const w=i===g.length-1?span[1]-x:usable*vals[i]/sum;
+      pos[o.id]={s:x,e:x+w,w:w,c:x+w/2,y:o.y,h:o.h};
+      x+=w+GAP;
+    });
+    g._done=true;
+  });
+  const out={},inb={};
+  p.links.forEach(l=>{(out[l.f]=out[l.f]||[]).push(l);(inb[l.t]=inb[l.t]||[]).push(l);});
+  const cut=(arr,sp,key)=>{
+    const tot=arr.reduce((a,l)=>a+l.v,0),usable=(sp.e-sp.s)-(arr.length-1)*PG;
+    let x=sp.s;
+    arr.forEach((l,i)=>{
+      const w=i===arr.length-1?sp.e-x:usable*l.v/tot;
+      l[key]=[x,x+w];x+=w+PG;
+    });
+  };
+  for(const k in out)cut(out[k],pos[k],"sp");
+  for(const k in inb)cut(inb[k],pos[k],"tp");
+  return {X:X,W:W,S:S,pos:pos,links:p.links,id:p.id||""};
+}
+
+/* ============================================================
+   3. 主图（1080 宽 SVG）
+   ============================================================ */
+function posterInner(co){
+  const p=co.poster,E=engine(Object.assign({},p,{id:co.id})),o=[];const push=s=>o.push(s);
+  const {X,pos,links}=E;const P=id=>pos[id];
+  const rect=(x,y,w,h,fill,rx=0)=>push('<rect x="'+x.toFixed(2)+'" y="'+y+'" width="'+Math.max(.7,w).toFixed(2)+'" height="'+h+'" rx="'+rx+'" fill="'+fill+'"/>');
+  const t=(x,y,s,op={})=>{const{size=15,weight=400,fill=F.navy,anchor="middle",ls=0,opa=1}=op;
+    push('<text x="'+x.toFixed(1)+'" y="'+y+'" font-size="'+size+'" font-weight="'+weight+'" fill="'+fill+'" text-anchor="'+anchor+'"'+(ls?' letter-spacing="'+ls+'"':'')+' opacity="'+opa+'">'+s+'</text>');};
+  const ribbon=(l,y0,y1,fill)=>{const a=l.sp[0],b=l.sp[1],c=l.tp[0],d=l.tp[1],H=y1-y0,k=H*.5;
+    push('<path d="M'+a.toFixed(2)+','+y0+' C'+a.toFixed(2)+','+(y0+k).toFixed(2)+' '+c.toFixed(2)+','+(y1-k).toFixed(2)+' '+c.toFixed(2)+','+y1+
+      ' L'+d.toFixed(2)+','+y1+' C'+d.toFixed(2)+','+(y1-k).toFixed(2)+' '+b.toFixed(2)+','+(y0+k).toFixed(2)+' '+b.toFixed(2)+','+y0+' Z" fill="'+fill+'"/>');};
+  const icon=(name,cx,cy,size,color)=>{const sc=size/24;
+    const pp={bag:'<rect x="5" y="9" width="14" height="11" rx="2.4" fill="none" stroke="'+color+'" stroke-width="1.8"/><path d="M9.4 9V7.2a2.6 2.6 0 0 1 5.2 0V9" fill="none" stroke="'+color+'" stroke-width="1.8"/>',
+      cloud:'<path d="M7.2 17.4h9.8a3.7 3.7 0 0 0 .2-7.4 5.5 5.5 0 0 0-10.4 1.5 3.8 3.8 0 0 0 .4 5.9z" fill="none" stroke="'+color+'" stroke-width="1.8"/>',
+      chip:'<rect x="7.2" y="7.2" width="9.6" height="9.6" rx="1.4" fill="none" stroke="'+color+'" stroke-width="1.8"/><path d="M10 4.2v3M14 4.2v3M10 16.8v3M14 16.8v3M4.2 10h3M4.2 14h3M16.8 10h3M16.8 14h3" stroke="'+color+'" stroke-width="1.6"/>',
+      grid:'<rect x="5" y="5" width="5.6" height="5.6" rx="1.2" fill="'+color+'"/><rect x="13.4" y="5" width="5.6" height="5.6" rx="1.2" fill="'+color+'"/><rect x="5" y="13.4" width="5.6" height="5.6" rx="1.2" fill="'+color+'"/><rect x="13.4" y="13.4" width="5.6" height="5.6" rx="1.2" fill="'+color+'"/>',
+      engine:'<rect x="4.4" y="8.2" width="14.6" height="9" rx="1.4" fill="none" stroke="'+color+'" stroke-width="1.8"/><path d="M8.4 8.2V5.4h6.4v2.8" fill="none" stroke="'+color+'" stroke-width="1.8"/><path d="M2.2 11.4h2.2M19 11.4h2.6M9.6 11.4v3.4M14 11.4v3.4" stroke="'+color+'" stroke-width="1.5"/>',
+      forklift:'<rect x="3.4" y="8.6" width="6.4" height="8" rx="1.2" fill="none" stroke="'+color+'" stroke-width="1.8"/><path d="M12.6 17.4V5.6M12.6 17.4h8" fill="none" stroke="'+color+'" stroke-width="1.8"/><circle cx="6" cy="18.6" r="1.5" fill="none" stroke="'+color+'" stroke-width="1.5"/><circle cx="13.6" cy="18.6" r="1.5" fill="none" stroke="'+color+'" stroke-width="1.5"/>',
+      tractor:'<circle cx="7.6" cy="15.4" r="3.7" fill="none" stroke="'+color+'" stroke-width="1.8"/><circle cx="17.2" cy="17.1" r="2.2" fill="none" stroke="'+color+'" stroke-width="1.6"/><path d="M4.2 12.2h7.6l1.6-4.2h3.4" fill="none" stroke="'+color+'" stroke-width="1.8"/>'};
+    push('<g transform="translate('+(cx-size/2).toFixed(1)+','+(cy-size/2).toFixed(1)+') scale('+sc+')">'+pp[name]+'</g>');};
+
+  const fid=co.id;
+  push('<defs>'+
+    '<linearGradient id="fgG_'+fid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcefd2"/><stop offset="1" stop-color="#c2dcb0"/></linearGradient>'+
+    '<linearGradient id="fgR_'+fid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fad4d1"/><stop offset="1" stop-color="#eeaeab"/></linearGradient>'+
+    '<linearGradient id="fgW_'+fid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#deded6"/><stop offset="1" stop-color="#c6c6bd"/></linearGradient>'+
+    '</defs>');
+  /* 流向 */
+  links.forEach(l=>{const y0=P(l.f).y+P(l.f).h,y1=P(l.t).y;
+    ribbon(l,y0,y1,l.k==="g"?"url(#fgG_"+fid+")":l.k==="r"?"url(#fgR_"+fid+")":"url(#fgW_"+fid+")");});
+  /* 节点 */
+  p.nodes.forEach(n=>{const q=P(n.id);
+    rect(q.s,q.y,q.w,q.h,n.fill==="ink"?F.ink:n.fill==="green"?F.green:F.red,n.id.startsWith("s")?0:0);});
+
+  /* 标题区 */
+  const hdr=co.header||{tY:96,subY:142,hz:170,note:""};
+  t(540,hdr.tY,co.title,{size:84,weight:900,fill:F.navy,ls:3});
+  t(540,hdr.subY,co.sub,{size:20,fill:F.sub});
+  const hz=hdr.hz;
+  push('<path d="M'+X[0]+' '+hz+'H'+X[1]+'M'+X[1]+' '+hz+'v12" stroke="'+F.navy+'" stroke-width="1.4" fill="none" opacity="0.75"/>');
+  t(X[0],hz-8,hdr.note,{size:15,weight:700,anchor:"start"});
+
+  /* ---- 各公司在节点上的标注：由 companies/<id>.js 的 draw() 提供 ---- */
+  const q=id=>P(id);
+  if(co.draw)co.draw(t,q,rect,icon,push,co,X,F,fmt,fmt0);
+  return o.join("");
+}
+function posterSVG(co){
+  const h=co.poster.h;
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 '+h+'" width="1080" height="'+h+'" role="img" aria-label="'+co.title+'">'+posterInner(co)+'</svg>';
+}
+
+/* ============================================================
+   4. 季度趋势小图（320×176，页面与导出共用）
+   ============================================================ */
+function chart(kind,pts,co){
+  const W=320,H=176,L=10,R=10,T=30,B=36,iw=W-L-R,n=pts.length,sw=iw/n;
+  const o=[];const push=s=>o.push(s);
+  const txt=(x,y,s,op={})=>{const{size=10,weight=700,fill=F.navy,anchor="middle",opa=1}=op;
+    push('<text x="'+x.toFixed(1)+'" y="'+y+'" font-size="'+size+'" font-weight="'+weight+'" fill="'+fill+'" text-anchor="'+anchor+'" opacity="'+opa+'">'+s+'</text>');};
+  const UB=(co&&co.unit&&co.unit.indexOf("美元")>=0)?"亿美元":"亿元";
+  const titles={rev:"营业收入（"+UB+"）",opm:"经营利润率（%）",cf:"经营现金流 / 自由现金流（"+UB+"）"};
+  txt(L,16,titles[kind],{size:12.5,weight:800,anchor:"start"});
+  if(kind==="cf"){push('<rect x="234" y="8" width="7" height="7" rx="1.5" fill="#4e9c5c"/><text x="245" y="14.5" font-size="8.5" fill="#8a8a84">经营</text>'+'<rect x="278" y="8" width="7" height="7" rx="1.5" fill="#8bbf95"/><text x="289" y="14.5" font-size="8.5" fill="#8a8a84">自由</text>');}
+  const maxV=()=>{let m=0;pts.forEach(q=>{const v=kind==="rev"?q.rev:kind==="opm"?q.opm:Math.max(Math.abs(q.ocf||0),Math.abs(q.fcf||0));if(v!=null)m=Math.max(m,v);});return m||1;};
+  const M=maxV();
+  pts.forEach((q,i)=>{
+    const x=L+i*sw+sw*0.14,w=sw*0.72,cx=L+i*sw+sw/2;
+    const isLast=(i===n-1);
+    if(kind==="cf"){
+      const zy=T+52,hh=52,Mx=Math.max(...pts.map(p=>Math.max(Math.abs(p.ocf||0),Math.abs(p.fcf||0))),1);
+      if(q.ocf==null&&q.fcf==null){
+        push('<rect x="'+(x)+'" y="'+(zy-14)+'" width="'+w+'" height="28" fill="none" stroke="#dcdad3" stroke-dasharray="4 3" rx="3"/>');
+        txt(cx,zy+4,"—",{size:10,fill:"#b3b1aa"});
+      }else{
+        const bw=w/2-3;
+        push('<rect x="'+(cx-3-bw)+'" y="'+(q.ocf>=0?zy-hh*Math.abs(q.ocf)/Mx:zy)+'" width="'+bw+'" height="'+(hh*Math.abs(q.ocf)/Mx)+'" fill="'+(q.ocf>=0?"#4e9c5c":"#b5322a")+'" rx="2"/>');
+        push('<rect x="'+(cx+3)+'" y="'+(q.fcf>=0?zy-hh*Math.abs(q.fcf)/Mx:zy)+'" width="'+bw+'" height="'+(hh*Math.abs(q.fcf)/Mx)+'" fill="'+(q.fcf>=0?"#8bbf95":"#d9a09b")+'" rx="2"/>');
+      }
+      if(i===0)push('<line x1="'+L+'" y1="'+zy+'" x2="'+(W-R)+'" y2="'+zy+'" stroke="#cfcdc6" stroke-width="1"/>');
+    }else{
+      const base=H-B,col=(kind==="rev")?"#123050":(q.opm>=0?"#4e9c5c":"#b5322a");
+      const v=kind==="rev"?q.rev:q.opm;
+      if(v==null){
+        push('<rect x="'+x+'" y="'+(base-54)+'" width="'+w+'" height="54" fill="none" stroke="#dcdad3" stroke-dasharray="4 3" rx="3"/>');
+        txt(cx,base-24,"—",{size:11,fill:"#b3b1aa"});
+      }else{
+        const h=(base-T-10)*v/M;
+        push('<rect x="'+x+'" y="'+(base-h)+'" width="'+w+'" height="'+h+'" fill="'+col+'" rx="3" opacity="'+(isLast?1:.45)+'"/>');
+        txt(cx,base-h-6,(kind==="rev"?fmt0(v):v.toFixed(1)+"%"),{size:9.5,weight:800,fill:col});
+      }
+    }
+    txt(cx,H-16,q.l,{size:9.5,weight:isLast?800:700,fill:isLast?F.navy:"#8a8a84"});
+
+  });
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 176" width="320" height="176">'+o.join("")+'</svg>';
+}
+
+/* ============================================================
+   5. 页面渲染
+   ============================================================ */
+function renderCo(co){
+  const cf=co.cash;
+  const barHtml=cf.bars.map(b=>{
+    const w=Math.abs(b.v)/cf.max*50,l=b.v>=0?50:50-w;
+    return '<div class="cfrow"><div class="nm">'+b.l+'</div><div class="cftrack">'+
+      '<div class="cfbar '+(b.v>=0?"pos":"neg")+'" style="left:'+l+'%;width:'+w+'%"></div></div>'+
+      '<div class="vv '+(b.v>=0?"pos":"neg")+'">'+(b.v>=0?"+":"")+fmt(b.v)+"亿</div></div>";
+  }).join("");
+  const facts=cf.facts.map(f=>'<div class="fact"><i>'+f.i+'</i><b>'+f.b+'</b><s>'+f.s+'</s></div>').join("");
+  const bs=co.bs.map(b=>'<div class="bcard"><i>'+b.l+'</i><b>'+b.v+'</b><s>'+b.s+'</s></div>').join("");
+  const charts="rev|opm|cf".split("|").map(k=>'<div class="cell">'+chart(k,co.trend,co)+'</div>').join("");
+  const notes=co.notes.map(nt=>'<details><summary>'+nt.h+'</summary><div class="body">'+nt.b+'</div></details>').join("");
+  const src=co.src.map(s=>'<p>'+s+'</p>').join("");
+  return '<section class="co" id="p-'+co.id+'">'+
+   '<div class="wrap">'+
+    '<div class="meta"><b>'+co.name+'</b> ｜ '+co.code+' ｜ '+co.period+' ｜ 期末 '+co.end+' ｜ 披露 '+co.disclosed+'<br>口径：'+co.basis+' ｜ 单位：'+co.unit+'</div>'+
+    '<div class="take"><h3>本季三个要点</h3><ul>'+co.take.map(x=>'<li><span class="k">'+x.k+'</span><span>'+x.t+'</span></li>').join("")+'</ul></div>'+
+    '<div class="poster">'+posterSVG(co)+'</div>'+
+    '<p class="hint">主图：'+co.title+'（点开下方“口径与明细”可查每个数字的出处与算式）</p>'+
+    '<div class="sec"><h2>'+cf.title+'</h2><p class="sub">红绿以零轴为中点，长度按金额大小等比；右侧为现金口径的关键补充</p>'+
+      '<div class="cf">'+barHtml+'</div><div class="facts">'+facts+'</div>'+
+      '<p class="hint" style="margin:14px 0 0">'+cf.note+'</p></div>'+
+    '<div class="sec"><h2>资产负债表：手里有多少现金，欠多少</h2><p class="sub">期末余额 vs 上一个可比期末，均为报表原值</p><div class="bs">'+bs+'</div></div>'+
+    '<div class="sec"><h2>最近几个季度怎么变</h2><p class="sub">'+co.trendNote+'</p><div class="tr">'+charts+'</div>'+
+      '<p class="hint" style="margin:14px 0 0">深色柱为最新一期；虚线框表示该期数据未取到（图线断开，不做插补）。</p></div>'+
+    '<div class="sec"><h2>口径、明细与下季看点</h2>'+notes+'</div>'+
+    '<div class="sec"><h2>数据来源</h2><div class="src">'+src+'</div></div>'+
+   '</div></section>';
+}
+
+/* ============================================================
+   6. 分享版长图（2160px 宽，SVG → Canvas）
+   ============================================================ */
+function shareSVG(co){
+  const H0=co.poster.h,L=56,R=1024,IW=R-L;
+  const o=[];const push=s=>o.push(s);
+  let Y=H0+40;
+  const tx=(x,y,s,op={})=>{const{size=15,weight=400,fill=F.navy,anchor="start"}=op;
+    push('<text x="'+x+'" y="'+y+'" font-size="'+size+'" font-weight="'+weight+'" fill="'+fill+'" text-anchor="'+anchor+'">'+s+'</text>');};
+  const rule=()=>{push('<line x1="'+L+'" y1="'+Y+'" x2="'+R+'" y2="'+Y+'" stroke="#dcdad3"/>');Y+=12;};
+  const hd=s=>{tx(L,Y,s,{size:21,weight:800});Y+=16;rule();Y+=24;};
+
+  /* 结论 */
+  hd("本季三个要点");
+  co.take.forEach(x=>{
+    tx(L,Y,x.k,{size:13,weight:800,fill:"#428a4f"});
+    wrap(x.t,58).forEach(ln=>{tx(L+50,Y,ln,{size:14.5,fill:"#2a2a28"});Y+=24;});
+    Y+=14;
+  });
+  Y+=10;
+
+  /* 现金流 */
+  hd("现金：经营 / 投资 / 筹资");
+  const zx=560,hh=300,mx=co.cash.max;
+  co.cash.bars.forEach((b,i)=>{
+    const y=Y+i*44,w=Math.abs(b.v)/mx*hh;
+    push('<line x1="'+zx+'" y1="'+(Y-16)+'" x2="'+zx+'" y2="'+(Y+3*44-14)+'" stroke="#d4d2cb"/>');
+    tx(L,y, b.l, {size:15,weight:700,fill:"#333"});
+    push('<rect x="'+(b.v>=0?zx:zx-w)+'" y="'+(y-16)+'" width="'+w+'" height="26" rx="4" fill="'+(b.v>=0?"#4e9c5c":"#b5322a")+'"/>');
+    tx(b.v>=0?zx+w+12:zx-w-12,y,(b.v>=0?"+":"")+fmt(b.v)+"亿",{size:15,weight:800,fill:b.v>=0?"#2f7a3f":"#a92e26",anchor:b.v>=0?"start":"end"});
+  });
+  Y+=3*44+8;
+  co.cash.facts.forEach(f=>{
+    tx(L,Y,f.i,{size:12.5,fill:"#8a8a84"});
+    tx(L+128,Y,f.b,{size:14,weight:800,fill:F.navy});
+    tx(L+292,Y,f.s.slice(0,Math.min(52,f.s.length)),{size:11.5,fill:"#8a8a84"});
+    Y+=26;
+  });
+  Y+=14;
+
+  /* 资产负债 */
+  hd("资产负债表：现金与债务");
+  const cw=(IW-3*14)/4;
+  co.bs.forEach((b,i)=>{const x=L+i*(cw+14);
+    push('<rect x="'+x+'" y="'+Y+'" width="'+cw+'" height="132" rx="10" fill="#f8f7f3" stroke="#e6e3da"/>');
+    tx(x+14,Y+24,b.l,{size:11.5,fill:"#8a8a84"});
+    tx(x+14,Y+60,b.v,{size:23,weight:900,fill:F.navy});
+    wrap(b.s,22).slice(0,2).forEach((ln,k)=>tx(x+14,Y+84+k*16,ln,{size:10,fill:"#8a8a84"}));
+  });
+  Y+=152;
+
+  /* 趋势 */
+  hd("季度趋势（深色柱为最新一期）");
+  "rev|opm|cf".split("|").forEach((k,i)=>{
+    push('<g transform="translate('+(L+i*324)+','+Y+')">'+chart(k,co.trend,co).replace(/^<svg[^>]*>|<\/svg>$/g,"")+'</g>');
+  });
+  Y+=176+18;
+  wrap(co.trendNote,62).forEach(ln=>{tx(L,Y,ln,{size:11.5,fill:"#8a8a84"});Y+=18;});
+  Y+=26;
+
+  /* 来源 */
+  push('<line x1="'+L+'" y1="'+Y+'" x2="'+R+'" y2="'+Y+'" stroke="#dcdad3"/>');Y+=24;
+  wrap((co.name+" ｜ "+co.code+" ｜ "+co.period+" ｜ 期末 "+co.end+" ｜ "+co.unit+" ｜ 口径："+co.basis).replace(/未经审计/g,"未\u2060经\u2060审\u2060计").replace(/计算值/g,"计\u2060算\u2060值"),78).forEach(ln=>{tx(L,Y,ln,{size:12,fill:"#7a7a74"});Y+=20;});
+  Y+=6;
+  co.src.forEach(s=>{wrap(s,84).forEach(ln=>{tx(L,Y,ln,{size:11,fill:"#8f8f89"});Y+=17;});});
+  Y+=30;
+  const H=Math.round(Y);
+  return {svg:'<svg xmlns="http://www.w3.org/2000/svg" width="2160" height="'+(H*2)+'" viewBox="0 0 1080 '+H+'" font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">'+
+    '<rect width="1080" height="'+H+'" fill="#ffffff"/>'+posterInner(co)+o.join("")+'</svg>',h:H};
+}
+
+function download(co,mode){
+  const s=mode==="poster"
+    ?('<svg xmlns="http://www.w3.org/2000/svg" width="2160" height="'+(co.poster.h*2)+'" viewBox="0 0 1080 '+co.poster.h+'"><rect width="1080" height="'+co.poster.h+'" fill="#fff"/>'+posterInner(co)+'</svg>')
+    :shareSVG(co).svg;
+  const img=new Image();
+  img.onload=()=>{
+    const W=2160,Hh=Math.round(img.height/img.width*2160);
+    const cv=document.createElement("canvas");cv.width=W;cv.height=Hh;
+    const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,W,Hh);
+    ctx.drawImage(img,0,0,W,Hh);
+    cv.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);
+      a.download=co.name+"_"+co.period.replace(/[\\/:（）()·\s]/g,"")+(mode==="poster"?"_主图":"_图解")+".png";a.click();});
+  };
+  img.onerror=()=>alert("导出失败：浏览器不支持该 SVG 渲染，请改用截图。");
+  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<?xml version="1.0" standalone="no"?>'+s);
+}
+
+/* ============================================================
+   7. 装配
+   ============================================================ */
+let active=CO[0].id;
+const H0=location.hash.replace("#","");
+function show(id){
+  active=id;
+  if(id!=="how"){const c=CO.find(x=>x.id===id);
+    if(c&&!document.getElementById("p-"+id))document.getElementById("main").insertAdjacentHTML("beforeend",renderCo(c));}
+  CO.forEach(c=>{const el=document.getElementById("p-"+c.id);if(el)el.classList.toggle("on",c.id===id);});
+  document.getElementById("how").classList.toggle("on",id==="how");
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+(function(){
+  const nav=document.getElementById("nav");
+  nav.innerHTML='<div class="brand">财报图解</div>'+
+    CO.map(c=>'<button class="tab" data-id="'+c.id+'">'+c.nav+'</button>').join("")+
+    '<button class="tab ghost" data-id="how">＋ 新增公司</button><div class="spacer"></div>'+
+    '<button class="dl sec" id="btnP">导出主图</button><button class="dl" id="btnAll">下载高清 PNG</button>';
+  /* 惰性渲染：点到哪家才生成哪家的 DOM，公司再多也不拖慢首屏 */
+  if(window.ORDER&&CO.length<ORDER.length){document.getElementById("main").insertAdjacentHTML("afterbegin",
+    '<div class="wrap"><p class="hint" style="color:#b5322a">有 '+(ORDER.length-CO.length)+' 个公司模块没加载成功：请检查 companies/ 下文件名是否与 companies/_index.js 里的 id 一致（改完跑 node sync.js）。</p></div>');}
+  nav.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.id));
+  document.getElementById("btnAll").onclick=()=>download(CO.find(c=>c.id===active),"all");
+  document.getElementById("btnP").onclick=()=>download(CO.find(c=>c.id===active),"poster");
+  show((CO.some(c=>c.id===H0)||H0==="how")?H0:CO[0].id);
+})();
+</script>
+</body>
+</html>
