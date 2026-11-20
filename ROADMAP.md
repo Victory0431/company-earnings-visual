@@ -19,7 +19,7 @@
 | 5 | 超微半导体 AMD | NASDAQ: AMD | `amd` | 已入库 | `f674b72` |
 | 6 | 台积电 TSMC | NYSE: TSM / TWSE: 2330 | `tsm` | 已入库 | `47a906e` |
 | 7 | 阿斯麦 ASML | NASDAQ: ASML / Euronext: ASML | `asml` | 已入库 | `c1bb4ad` |
-| 8 | Meta Platforms, Inc. | NASDAQ: META | `meta` | 进行中 | — |
+| 8 | Meta Platforms, Inc. | NASDAQ: META | `meta` | 已入库 | `20843da` |
 | 9 | 腾讯控股 Tencent Holdings | HKEX: 0700 | `tencent` | 待办 | — |
 
 状态取值：`待办` → `进行中` → `已入库`；若某家当期只披露部分报表，在状态后加注 `（缺分部/缺现金流）`。
