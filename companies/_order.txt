@@ -8,3 +8,4 @@ nvda
 amd
 tsm
 asml
+meta
