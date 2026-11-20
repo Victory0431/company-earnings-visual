@@ -20,7 +20,9 @@
 | 6 | 台积电 TSMC | NYSE: TSM / TWSE: 2330 | `tsm` | 已入库 | `47a906e` |
 | 7 | 阿斯麦 ASML | NASDAQ: ASML / Euronext: ASML | `asml` | 已入库 | `c1bb4ad` |
 | 8 | Meta Platforms, Inc. | NASDAQ: META | `meta` | 已入库 | `20843da` |
-| 9 | 腾讯控股 Tencent Holdings | HKEX: 0700 | `tencent` | 待办 | — |
+| 9 | 腾讯控股 Tencent Holdings | HKEX: 0700 | `tencent` | 已入库 | `3d86050` |
+
+**本批 9 家已全部入库。** 下一批待用户指定（建议优先：微软财报更新、苹果 AAPL、特斯拉 TSLA、小米 1810、美团 3690、拼多多 PDD、台积电月营收、三星电子）。
 
 状态取值：`待办` → `进行中` → `已入库`；若某家当期只披露部分报表，在状态后加注 `（缺分部/缺现金流）`。
 
