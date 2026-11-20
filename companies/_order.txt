@@ -4,3 +4,4 @@ msft
 amzn
 googl
 orcl
+nvda
