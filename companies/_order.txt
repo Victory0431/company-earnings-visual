@@ -6,3 +6,4 @@ googl
 orcl
 nvda
 amd
+tsm
